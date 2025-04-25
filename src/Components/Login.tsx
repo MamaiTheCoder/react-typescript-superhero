@@ -2,22 +2,32 @@ import React, { useState } from "react";
 
 import Input from "./Input";
 import Button from "./Button";
+import { BE_signup } from "../Backend/Queries";
 
 function Login() {
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [signUpLoading, setSignUpLoading] = useState(false);
 
   const handleSignup = () => {
     const data = { email, password, confirmPassword };
     console.log(data);
+    BE_signup(data, setSignUpLoading, reset);
   };
 
   const handleSignin = () => {
     const data = { email, password };
     console.log(data);
   };
+
+  const reset = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
   return (
     <div className="w-full md:w-[450px]">
       <h1 className="text-white text-center font-bold text-4xl md:text-6xl mb-10">
@@ -51,7 +61,11 @@ function Login() {
           </>
         ) : (
           <>
-            <Button text="Register" onClick={handleSignup} />
+            <Button
+              text="Register"
+              onClick={handleSignup}
+              loading={signUpLoading}
+            />
             <Button onClick={() => setLogin(true)} text="Login" />
           </>
         )}
